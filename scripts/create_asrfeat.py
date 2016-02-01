@@ -35,10 +35,10 @@ if __name__ == '__main__':
                 continue
             vector[vocab_index[word]] += 1
         fread_asr.close()
-        norm = numpy.linalg.norm(vector)
-        if norm > 0:
-            vector = vector/norm
-        line = video_id+' '+';'.join([str(v) for v in vector])
+        s = sum(vector)
+        if s > 0:
+            vector = vector/s
+        line = ';'.join([str(v) for v in vector])
         feat_path = "asrfeat/"+video_id+".feat"
         fwrite = open(feat_path, "w")
         fwrite.write(line + '\n')

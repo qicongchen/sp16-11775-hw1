@@ -33,9 +33,9 @@ if __name__ == '__main__':
         labels = kmeans.predict(X)
         counter = collections.Counter(labels)
         vector = [counter[n] for n in xrange(cluster_num)]
-        norm = numpy.linalg.norm(vector)
-        if norm > 0:
-            vector = vector/norm
+        s = sum(vector)
+        if s > 0:
+            vector = vector/s
         line = ';'.join([str(v) for v in vector])
         feat_path = "kmeans/"+video_id+".feat"
         fwrite = open(feat_path, "w")
