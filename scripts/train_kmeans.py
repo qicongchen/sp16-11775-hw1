@@ -5,7 +5,6 @@ import os
 from sklearn.cluster.k_means_ import KMeans
 import cPickle
 import sys
-import csv
 
 # Performs K-means clustering and save the model to a local file
 
@@ -21,9 +20,7 @@ if __name__ == '__main__':
     output_file = sys.argv[3]
     cluster_num = int(sys.argv[2])
     # Read data
-    with open(mfcc_csv_file, 'rb') as f:
-        reader = csv.reader(f, delimiter=';')
-        X = list(reader)
+    X = numpy.genfromtxt(mfcc_csv_file, delimiter=";")
     # Fit model
     estimator = KMeans(n_clusters=cluster_num)
     estimator.fit(X)
