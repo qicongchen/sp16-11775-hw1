@@ -36,6 +36,7 @@ if __name__ == '__main__':
         vector = [counter[n] for n in xrange(cluster_num)]
         line = ';'.join([str(v) for v in vector])
         fwrite.write(line + '\n')
+    fread.close()
     fwrite.close()
 
     print "K-means features generated successfully!"

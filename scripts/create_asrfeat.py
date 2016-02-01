@@ -1,8 +1,6 @@
 #!/bin/python
 import numpy
 import os
-import cPickle
-from sklearn.cluster.k_means_ import KMeans
 import sys
 
 if __name__ == '__main__':
@@ -29,18 +27,21 @@ if __name__ == '__main__':
         asr_path = "asr/" + line.replace('\n', '') + ".ctm"
         if os.path.exists(asr_path) is False:
             continue
-        X = numpy.genfromtxt(asr_path, dtype=None, delimiter=" ")
         vector = [0]*len(vocab)
-        for x in X:
-            word = x[4]
+        fread_asr = open(asr_path, "r")
+        for line_asr in fread_asr.readlines():
+            tokens = line_asr.strip().split(' ')
+            word = tokens[4]
             if word not in vocab_index:
                 continue
             vector[vocab_index[word]] += 1
             norm = numpy.linalg.norm(vector)
             if norm > 0:
                 vector = vector/norm
+        fread_asr.close()
         line = ';'.join([str(v) for v in vector])
         fwrite.write(line + '\n')
+    fread.close()
     fwrite.close()
 
     print "ASR features generated successfully!"
