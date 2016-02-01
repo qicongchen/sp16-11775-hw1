@@ -35,7 +35,7 @@ if __name__ == '__main__':
                 continue
             vector[vocab_index[word]] += 1
         fread_asr.close()
-        s = sum(vector)
+        s = numpy.sum(vector) + 0.0
         if s > 0:
             vector = vector/s
         line = ';'.join([str(v) for v in vector])

@@ -33,7 +33,7 @@ if __name__ == '__main__':
         labels = kmeans.predict(X)
         counter = collections.Counter(labels)
         vector = [counter[n] for n in xrange(cluster_num)]
-        s = sum(vector)
+        s = numpy.sum(vector) + 0.0
         if s > 0:
             vector = vector/s
         line = ';'.join([str(v) for v in vector])
