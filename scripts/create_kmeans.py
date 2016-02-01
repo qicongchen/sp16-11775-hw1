@@ -23,8 +23,6 @@ if __name__ == '__main__':
     kmeans = cPickle.load(open(kmeans_model, "rb"))
 
     fread = open(file_list, "r")
-    hist_path = "kmeans/all.mfcc.hist"
-    fwrite = open(hist_path, "w")
 
     for line in fread.readlines():
         video_id = line.replace('\n', '')
@@ -38,9 +36,11 @@ if __name__ == '__main__':
         norm = numpy.linalg.norm(vector)
         if norm > 0:
             vector = vector/norm
-        line = video_id+' '+';'.join([str(v) for v in vector])
+        line = ';'.join([str(v) for v in vector])
+        feat_path = "kmeans/"+video_id+".feat"
+        fwrite = open(feat_path, "w")
         fwrite.write(line + '\n')
+        fwrite.close()
     fread.close()
-    fwrite.close()
 
     print "K-means features generated successfully!"
