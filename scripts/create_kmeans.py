@@ -27,14 +27,18 @@ if __name__ == '__main__':
     fwrite = open(hist_path, "w")
 
     for line in fread.readlines():
-        mfcc_path = "mfcc/" + line.replace('\n', '') + ".mfcc.csv"
+        video_id = line.replace('\n', '')
+        mfcc_path = "mfcc/" + video_id + ".mfcc.csv"
         if os.path.exists(mfcc_path) is False:
             continue
         X = numpy.genfromtxt(mfcc_path, delimiter=";")
         labels = kmeans.predict(X)
         counter = collections.Counter(labels)
         vector = [counter[n] for n in xrange(cluster_num)]
-        line = ';'.join([str(v) for v in vector])
+        norm = numpy.linalg.norm(vector)
+        if norm > 0:
+            vector = vector/norm
+        line = video_id+' '+';'.join([str(v) for v in vector])
         fwrite.write(line + '\n')
     fread.close()
     fwrite.close()

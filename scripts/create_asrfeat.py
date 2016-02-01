@@ -24,7 +24,8 @@ if __name__ == '__main__':
     fwrite = open(hist_path, "w")
 
     for line in fread.readlines():
-        asr_path = "asr/" + line.replace('\n', '') + ".ctm"
+        video_id = line.replace('\n', '')
+        asr_path = "asr/" + video_id + ".ctm"
         if os.path.exists(asr_path) is False:
             continue
         vector = [0]*len(vocab)
@@ -39,7 +40,7 @@ if __name__ == '__main__':
             if norm > 0:
                 vector = vector/norm
         fread_asr.close()
-        line = ';'.join([str(v) for v in vector])
+        line = video_id+' '+';'.join([str(v) for v in vector])
         fwrite.write(line + '\n')
     fread.close()
     fwrite.close()
