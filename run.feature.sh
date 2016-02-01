@@ -31,9 +31,9 @@ cat list/train | awk '{print $1}' > list/train.video
 cat list/test | awk '{print $1}' > list/test.video
 cat list/train.video list/test.video > list/all.video
 for line in $(cat "list/all.video"); do
-    #ffmpeg -y -i $video_path/${line}.mp4 -f wav temp/tmp.wav
-    ffmpeg -y -i $video_path/${line}.mp4 -ac 1 -f wav audio/$line.wav
-    #ch_wave temp/tmp.wav -c 0 -o audio/$line.wav
+    ffmpeg -y -i $video_path/${line}.mp4 -f wav temp/tmp.wav
+    #ffmpeg -y -i $video_path/${line}.mp4 -ac 1 -f wav audio/$line.wav
+    ch_wave temp/tmp.wav -c 0 -o audio/$line.wav
     SMILExtract -C config/MFCC12_0_D_A.conf -I audio/$line.wav -O mfcc/$line.mfcc.csv
 done
 # You may find the number of MFCC files mfcc/*.mfcc.csv is slightly less than the number of the videos. This is because some of the videos

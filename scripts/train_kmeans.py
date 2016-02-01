@@ -22,7 +22,7 @@ if __name__ == '__main__':
     cluster_num = int(sys.argv[2])
     # Read data
     with open(mfcc_csv_file, 'rb') as f:
-        reader = csv.reader(f)
+        reader = csv.reader(f, delimiter=';')
         X = list(reader)
     # Fit model
     estimator = KMeans(n_clusters=cluster_num)
