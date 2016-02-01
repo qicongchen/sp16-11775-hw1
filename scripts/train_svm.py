@@ -49,7 +49,7 @@ if __name__ == '__main__':
         features.append(feature)
 
     # train svm
-    clf = SVC()
+    clf = SVC(probability=True)
     clf.fit(features, labels)
     # Dump model
     with open(output_file, 'wb') as f:

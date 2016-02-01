@@ -46,9 +46,9 @@ if __name__ == '__main__':
         features.append(feature)
 
     # test svm
-    labels = svm.predict(features)
+    scores = svm.predict_log_proba(features)
     # dump result
     fwrite = open(output_file, 'w')
-    for label in labels:
-        fwrite.write("%s\n" % str(label))
+    for score in scores:
+        fwrite.write("%s\n" % str(score))
     fwrite.close()
