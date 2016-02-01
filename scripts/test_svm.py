@@ -22,3 +22,33 @@ if __name__ == '__main__':
     feat_dim = int(sys.argv[3])
     output_file = sys.argv[4]
 
+    # load the kmeans model
+    svm = cPickle.load(open(model_file, "rb"))
+
+    video_ids = []
+    # read in labels
+    label_file = "list/test"
+    fread_label = open(label_file, 'r')
+    for line in fread_label.readlines():
+        tokens = line.strip().split(' ')
+        video_id = tokens[0]
+        video_ids.append(video_id)
+    fread_label.close()
+
+    # read in features
+    features = []
+    for video_id in video_ids:
+        feat_path = feat_dir + video_id + ".feat"
+        if os.path.exists(feat_path) is False:
+            feature = [0]*feat_dim
+        else:
+            feature = numpy.genfromtxt(feat_path, delimiter=';')
+        features.append(feature)
+
+    # test svm
+    labels = svm.predict(features)
+    # dump result
+    fwrite = open(output_file, 'w')
+    for label in labels:
+        fwrite.write("%s\n" % str(label))
+    fwrite.close()

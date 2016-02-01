@@ -22,8 +22,9 @@ if __name__ == '__main__':
     feat_dim = int(sys.argv[3])
     output_file = sys.argv[4]
 
+    video_ids = []
     # read in labels
-    labels = {}
+    labels = []
     label_file = "list/"+event_name+"_train"
     fread_label = open(label_file, 'r')
     for line in fread_label.readlines():
@@ -33,29 +34,23 @@ if __name__ == '__main__':
             label = -1
         else:
             label = 1
-        labels[video_id] = label
+        video_ids.append(video_id)
+        labels.append(label)
     fread_label.close()
 
     # read in features
-    features = {}
-    for video_id in labels.keys():
+    features = []
+    for video_id in video_ids:
         feat_path = feat_dir + video_id + ".feat"
         if os.path.exists(feat_path) is False:
-            continue
-        feature = numpy.genfromtxt(feat_path, delimiter=';')
-        features[video_id] = feature
+            feature = [0]*feat_dim
+        else:
+            feature = numpy.genfromtxt(feat_path, delimiter=';')
+        features.append(feature)
 
     # train svm
-    X = []
-    y = []
-    for video_id, label in labels.items():
-        if video_id not in features:
-            continue
-        feature = features[video_id]
-        X.append(feature)
-        y.append(label)
     clf = SVC()
-    clf.fit(X, y)
+    clf.fit(features, labels)
     # Dump model
     with open(output_file, 'wb') as f:
         cPickle.dump(clf, f)
