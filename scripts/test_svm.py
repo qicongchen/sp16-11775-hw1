@@ -46,7 +46,7 @@ if __name__ == '__main__':
         features.append(feature)
 
     # test svm
-    scores = svm.predict_log_proba(features)
+    scores = [sample[1] for sample in svm.predict_log_proba(features)]
     # dump result
     fwrite = open(output_file, 'w')
     for score in scores:
