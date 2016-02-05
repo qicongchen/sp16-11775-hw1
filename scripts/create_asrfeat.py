@@ -52,7 +52,7 @@ if __name__ == '__main__':
         # save tf vector
         vectors[video_id] = vector
 
-    vocab_idf = numpy.log(1+numpy.divide(n_doc+0.0,vocab_df))
+    vocab_idf = numpy.log(numpy.divide(n_doc, 1.0+vocab_df))
     for video_id, vector in vectors.items():
         # normalize by idf
         vector = vector * vocab_idf
