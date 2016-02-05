@@ -16,25 +16,46 @@ if __name__ == '__main__':
     # create reverted index for vocab
     vocab = numpy.genfromtxt(vocab_file, dtype=str)
     vocab_index = {}
+    n_doc = 0
+    vocab_df = [0]*len(vocab)
     for i, v in enumerate(vocab):
         vocab_index[v] = i
 
+    vectors = {}
     fread = open(file_list, "r")
-
     for line in fread.readlines():
         video_id = line.replace('\n', '')
         asr_path = "asr/" + video_id + ".ctm"
         if os.path.exists(asr_path) is False:
             continue
-        vector = [0]*len(vocab)
+        n_doc += 1
+        # word count
+        vector = {}
         fread_asr = open(asr_path, "r")
         for line_asr in fread_asr.readlines():
             tokens = line_asr.strip().split(' ')
             word = tokens[4]
             if word not in vocab_index:
                 continue
-            vector[vocab_index[word]] += 1
+            if word not in vector:
+                vector[word] = 0
+            vector[word] += 1
         fread_asr.close()
+        # inc df
+        for k, v in vector.items():
+            vocab_df[vocab_index[k]] += 1
+        # word count dict to list
+        tmp = []
+        for k, v in vector.items():
+            tmp[vocab_index[k]] = v
+        vector = tmp
+        # save tf vector
+        vectors[video_id] = vector
+
+    vocab_idf = numpy.log(1+numpy.divide((n_doc+0.0)/vocab_df))
+    for video_id, vector in vectors.items():
+        # normalize by idf
+        vector = vector * vocab_idf
         s = numpy.sum(vector) + 0.0
         if s > 0:
             vector = vector/s
