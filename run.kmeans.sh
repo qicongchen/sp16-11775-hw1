@@ -27,8 +27,8 @@ mfcc_dim=39
 # Each video is represented by a single vector which has the same dimension as the number of clusters. 
 # echo "Creating k-means cluster vectors"
 # python scripts/create_kmeans.py kmeans.${cluster_num}.model $cluster_num list/all.video || exit 1;
-echo "Creating raw mfcc vectors"
-python scripts/create_raw.py list/all.video || exit 1;
+# echo "Creating raw mfcc vectors"
+# python scripts/create_raw.py list/all.video || exit 1;
 
 # Now you can see that you get the bag-of-word representations under kmeans/. Each video is now represented
 # by a {cluster_num}-dimensional vector.
@@ -37,9 +37,9 @@ python scripts/create_raw.py list/all.video || exit 1;
 # a vector which has the same dimension as the size of the vocabulary. The elements of this vector are the number of occurrences 
 # of the corresponding word. The vector is normalized to be like a probability. 
 # You can of course explore other better ways, such as TF-IDF, of generating these features.
-# echo "Creating ASR features"
-# mkdir -p asrfeat
-# python scripts/create_asrfeat.py vocab list/all.video || exit 1;
+echo "Creating ASR features"
+mkdir -p asrfeat
+python scripts/create_asrfeat.py vocab list/all.video || exit 1;
 
 # Great! We are done!
 echo "SUCCESSFUL COMPLETION"

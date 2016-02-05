@@ -45,14 +45,14 @@ if __name__ == '__main__':
         for k, v in vector.items():
             vocab_df[vocab_index[k]] += 1
         # word count dict to list
-        tmp = []
+        tmp = [0]*len(vocab)
         for k, v in vector.items():
             tmp[vocab_index[k]] = v
         vector = tmp
         # save tf vector
         vectors[video_id] = vector
 
-    vocab_idf = numpy.log(1+numpy.divide((n_doc+0.0)/vocab_df))
+    vocab_idf = numpy.log(1+numpy.divide(n_doc+0.0,vocab_df))
     for video_id, vector in vectors.items():
         # normalize by idf
         vector = vector * vocab_idf
