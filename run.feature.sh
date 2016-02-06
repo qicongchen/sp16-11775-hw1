@@ -34,15 +34,15 @@ for line in $(cat "list/all.video"); do
     ffmpeg -y -i $video_path/${line}.mp4 -f wav temp/tmp.wav
     #ffmpeg -y -i $video_path/${line}.mp4 -ac 1 -f wav audio/$line.wav
     ch_wave temp/tmp.wav -c 0 -o audio/$line.wav
-    SMILExtract -C config/MFCC12_0_D_A.conf -I audio/$line.wav -O mfcc/$line.mfcc.csv
+    SMILExtract -C config/MFCC12_E_D_A_Z.conf -I audio/$line.wav -O mfcc/$line.mfcc.csv
 done
 # You may find the number of MFCC files mfcc/*.mfcc.csv is slightly less than the number of the videos. This is because some of the videos
 # don't hae the audio track. For example, HVC1221, HVC1222, HVC1261, HVC1794 
 
 # In this part, we train a clustering model to cluster the MFCC vectors. In order to speed up the clustering process, we
 # select a small portion of the MFCC vectors. In the following example, we only select 20% randomly from each video. 
-echo "Pooling MFCCs (optional)"
-python scripts/select_frames.py list/train.video 0.2 select.mfcc.csv || exit 1;
+#echo "Pooling MFCCs (optional)"
+#python scripts/select_frames.py list/train.video 0.2 select.mfcc.csv || exit 1;
 
 # now trains a k-means model using the sklearn package
 echo "Training the k-means model"

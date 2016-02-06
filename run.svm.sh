@@ -25,7 +25,7 @@ dim_mfcc=39
 for event in P001 P002 P003; do
   echo "=========  Event $event  ========="
   # now train a svm model
-  # python scripts/train_svm.py $event "kmeans/" $feat_dim_mfcc mfcc_pred/svm.$event.model || exit 1;
+  python scripts/train_svm.py $event "kmeans/" $feat_dim_mfcc mfcc_pred/svm.$event.model || exit 1;
   # now train a svm model on raw feature
   python scripts/train_svm.py $event "raw/" $dim_mfcc mfcc_pred/svm.$event.model.raw || exit 1; 
   # apply the svm model to *ALL* the testing videos;
@@ -56,9 +56,9 @@ for event in P001 P002 P003; do
   # output the score of each testing video to a file ${event}_pred 
   python scripts/test_svm.py asr_pred/svm.$event.model "asrfeat/" $feat_dim_asr asr_pred/${event}_pred || exit 1;
   # output the score of each randomly testing video to a file ${event}_pred
-  # python scripts/test_random.py asr_pred/${event}_pred_random || exit 1;
+  python scripts/test_random.py asr_pred/${event}_pred_random || exit 1;
   # compute the average precision by calling the mAP package
   ap list/${event}_test_label asr_pred/${event}_pred
-  # ap list/${event}_test_label asr_pred/${event}_pred_random
+  ap list/${event}_test_label asr_pred/${event}_pred_random
 done
 
